@@ -12,8 +12,11 @@ class CNNClassifier(nn.Module):
     def __init__(self):
         super(CNNClassifier, self).__init__()
         self.conv1=nn.Conv2d(3,32,3,1)
+        self.bn1 = nn.BatchNorm2d(32)  # 添加批量归一化层
         self.conv2=nn.Conv2d(32,64,3,1)
+        self.bn2 = nn.BatchNorm2d(64)  # 添加批量归一化层
         self.conv3=nn.Conv2d(64,128,3,1)
+        self.bn3 = nn.BatchNorm2d(128)  # 添加批量归一化层
         self.dropout1=nn.Dropout(0.25)
         self.dropout2=nn.Dropout(0.5)
         self.fc1=nn.Linear(6*6*128,1024)
@@ -22,11 +25,14 @@ class CNNClassifier(nn.Module):
     
     def forward(self,x):
         x=self.conv1(x)
+        x=self.bn1(x)  # 使用批量归一化层
         x=F.relu(x)
         x=self.conv2(x)
+        x=self.bn2(x)  # 使用批量归一化层
         x=F.relu(x)
         x=F.max_pool2d(x,2)
         x=self.conv3(x)
+        x=self.bn3(x)  # 使用批量归一化层
         x=F.relu(x)
         x=F.max_pool2d(x,2)
         x=torch.flatten(x,1)
@@ -83,9 +89,9 @@ def main():
 
     model=CNNClassifier().to(device)
     optimizer=optim.Adadelta(model.parameters(),lr=1.0)
-    scheduler=StepLR(optimizer,step_size=1,gamma=0.7)
+    scheduler=StepLR(optimizer,step_size=1,gamma=0.9)
 
-    epoches=10
+    epoches=20
     start=time.time()
 
     for epoch in range(1,epoches+1):
