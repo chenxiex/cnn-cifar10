@@ -85,12 +85,17 @@ def main():
     optimizer=optim.Adadelta(model.parameters(),lr=1.0)
     scheduler=StepLR(optimizer,step_size=1,gamma=0.7)
 
-    epoches=20
+    epoches=10
+    start=time.time()
 
     for epoch in range(1,epoches+1):
         train(model,device,train_loader,optimizer)
+        print("批次：{}，".format(epoch,scheduler.get_last_lr()),end='')
         test(model,device,test_loader)
         scheduler.step()
+    
+    end=time.time()
+    print("训练时间：{:.2f}s".format(end-start))
     
     torch.save(model.state_dict(),'cifar10_cnn.pt')
 
