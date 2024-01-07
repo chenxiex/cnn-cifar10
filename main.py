@@ -90,7 +90,7 @@ def main():
 
     for epoch in range(1,epoches+1):
         train(model,device,train_loader,optimizer)
-        print("批次：{}，".format(epoch,scheduler.get_last_lr()),end='')
+        print("批次：{}，".format(epoch),end='')
         test(model,device,test_loader)
         scheduler.step()
     
