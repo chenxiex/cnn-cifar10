@@ -15,7 +15,7 @@ class CNNClassifier(nn.Module):
         self.conv2=nn.Conv2d(32,64,3,1)
         self.dropout1=nn.Dropout(0.25)
         self.dropout2=nn.Dropout(0.5)
-        self.fc1=nn.Linear(13*13*64,128)
+        self.fc1=nn.Linear(14*14*64,128)
         self.fc2=nn.Linear(128,10)
     
     def forward(self,x):
